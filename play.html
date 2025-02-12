@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="title"></title>
+
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+
+  <!-- 
+    - custom css link
+  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src='./script/env.js'></script>
+  <script src='./script/subtitles.js'></script>
+  <script src='./script/movies.js'></script>
+  <script src='./script/translate.js'></script>
+</head>
+
+<body id="top">
+
+  <!-- 
+    - #HEADER
+  -->
+
+  <header class="header" data-header>
+    <div class="container">
+
+      <div class="overlay" data-overlay></div>
+
+      <a href="./movies.html" class="logo">
+        <img src="./assets/images/logo.svg" alt="Filmlane logo">
+      </a>
+
+      <h1 style="color:whitesmoke;text-shadow: 3px 3px 5px #0080ff;">Shinso</h1>
+
+      <div class="header-actions">
+
+      <div class="search-box">
+        <form action="search.html">
+          <button class="btn-search" type="submit"><i class="fas fa-search"></i></button>
+          <input type="text" class="input-search" placeholder="Pretrazi..." name="search">
+        </form>
+      </div>
+
+      </div>
+
+      <button class="menu-open-btn" data-menu-open-btn>
+        <ion-icon name="reorder-two"></ion-icon>
+      </button>
+
+      <nav class="navbar" data-navbar>
+
+        <div class="navbar-top">
+
+          <a href="./index.html" class="logo">
+            <img src="./assets/images/logo.svg" alt="Filmlane logo">
+          </a>
+
+          <button class="menu-close-btn" data-menu-close-btn>
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+
+        </div>
+
+        <ul class="navbar-list">
+
+          <li>
+            <a href="./movies.html" class="navbar-link">Home</a>
+          </li>
+
+          <li>
+            <a href="./browseMovies.html" class="navbar-link">Filmovi</a>
+          </li>
+
+          <li>
+            <a href="#" class="navbar-link">Serije</a>
+          </li>
+
+        </ul>
+      </nav>
+
+    </div>
+  </header>
+  <br>
+
+  <main>
+    <article>
+      <!-- 
+        - #TRENDING
+      -->
+      <div id="background">
+      <section class="top-rated" style="padding-bottom: 1%;background-image: linear-gradient(to right, rgba(15, 15, 15, 1), rgba(15, 15, 15, 0.7) 50%, rgba(15, 15, 15, 1) 100%);background-color: transparent;">
+        <div class="container">
+            <div style="display: flex;justify-content: center;padding-bottom: 2%;">
+                <iframe id="iframe" src="" width="80%" height="700" frameborder="0" allowfullscreen style="box-shadow: rgba(0, 0, 0, 0.8) 0px 0px 0px 10px, rgb(0, 0, 0) 0px 4px 8px;;visibility: hidden;"></iframe>
+            </div>
+            <div>
+                <ul class="filter-list" style="gap: 5%;">
+                <li>
+                  <button id="server1" class="filter-btn serverActive" onclick="server1()" style="display: flex;justify-content: center;align-items: center;"><ion-icon name="play"></ion-icon><span style="padding-left: 10px;">Multiembed</span></button>
+                </li>
+                <li>
+                  <button id="server2" class="filter-btn" onclick="server2()" style="display: flex;justify-content: center;align-items: center;"><ion-icon name="play"></ion-icon><span style="padding-left: 10px;">Autoembed</span></button>
+                </li>
+                <li>
+                  <button id="server3" class="filter-btn" onclick="server3()" style="display: flex;justify-content: center;align-items: center;"><ion-icon name="play"></ion-icon><span style="padding-left: 10px;">Vidsrc</span></button>
+                </li>
+                <li>
+                  <button id="server4" class="filter-btn" onclick="server4()" style="display: flex;justify-content: center;align-items: center;"><ion-icon name="play"></ion-icon><span style="padding-left: 10px;">Vidsrc 2</span></button>
+                </li>
+                <li>
+                  <button id="server5" class="filter-btn" onclick="server5()" style="display: flex;justify-content: center;align-items: center;"><ion-icon name="play"></ion-icon><span style="padding-left: 10px;">Gomo</span></button>
+                </li>
+              </ul>
+            </div>
+            <div>
+                <h2 class="h2" style="display: flex;justify-content: center;padding-bottom: 1%;">Titlovi</h2>
+                <ul class="filter-list" id="titloviHTML" style="gap: 100px;"></ul>
+            </div>
+        </div>
+      </section>
+      </div>
+    </article>
+  </main>
+
+
+  <!-- 
+    - #FOOTER
+  -->
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <div class="container">
+
+        <p class="copyright">
+          &copy; 2023 <a href="#">siki</a>. All Rights Reserved
+        </p>
+
+      </div>
+    </div>
+
+  </footer>
+
+
+
+
+
+  <!-- 
+    - #GO TO TOP
+  -->
+
+  <a class="go-back" onclick="goBack()">
+    <ion-icon name="chevron-back"></ion-icon>
+  </a>
+
+  <div style="display:none;" id="movieID"></div>
+
+
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="./assets/js/script.js"></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script>
+    var params = window.location.search;
+    var movieID = params.split('=')[1].substring(2);
+    const withoutLeading0 = parseInt(movieID, 10);
+    
+    loginSubtitles(withoutLeading0);
+
+    movie(params.split('=')[1]);
+
+    function goBack() {
+        location.href = "movieDetails.html?" + document.getElementById('movieID').innerHTML;
+    }
+  </script>
+
+</body>
+
+</html>
