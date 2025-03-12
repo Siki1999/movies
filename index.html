@@ -85,7 +85,7 @@
           </li>
 
           <li>
-            <a href="#" class="navbar-link">Serije</a>
+            <a href="./browseSeries.html" class="navbar-link">Serije</a>
           </li>
 
         </ul>
@@ -103,7 +103,7 @@
       <section class="top-rated">
         <div class="container">
            <div class="flex-wrapper">
-              <h2 class="h2 section-title">Trending</h2>
+              <h2 class="h2 section-title" id="trending">Trending</h2>
 
               <ul class="filter-list">
 
@@ -112,7 +112,7 @@
                 </li>
 
                 <li>
-                  <button class="filter-btn" id="series">Serije</button>
+                  <button class="filter-btn" id="series" onclick="getSeries()">Serije</button>
                 </li>
               </ul>
            </div>
@@ -128,7 +128,7 @@
       <section class="top-rated2">
         <div class="container">
            <div class="flex-wrapper">
-              <h2 class="h2 section-title">Popularno</h2>
+              <h2 class="h2 section-title" id="popular">Popularno</h2>
            </div>
 
           <ul class="movies-list" id="lista_popularno"></ul>
@@ -142,7 +142,7 @@
       <section class="top-rated2">
         <div class="container">
            <div class="flex-wrapper">
-              <h2 class="h2 section-title">U kinima</h2>
+              <h2 class="h2 section-title" id="kina">U kinima</h2>
            </div>
 
           <ul class="movies-list" id="lista_ukinima"></ul>
@@ -156,7 +156,7 @@
       <section class="top-rated2">
         <div class="container">
            <div class="flex-wrapper">
-              <h2 class="h2 section-title">Uskoro dolazi</h2>
+              <h2 class="h2 section-title" id="soon">Uskoro dolazi</h2>
            </div>
 
           <ul class="movies-list" id="lista_uskoroDolazi"></ul>

@@ -123,7 +123,7 @@
             
 
 
-            <button class="btn btn-primary" onclick="browseMovie()" style="height: fit-content;margin-top: 2%;"><ion-icon name="play"></ion-icon><span>Filtriraj</span></button>
+            <button class="btn btn-primary" onclick="browseSeries()" style="height: fit-content;margin-top: 2%;"><ion-icon name="play"></ion-icon><span>Filtriraj</span></button>
           </div>
 
           <div style="margin-bottom: 2%;border: 1.5px solid #0080ff;"></div>
@@ -188,8 +188,8 @@
     document.getElementById('year').innerHTML += "<option>" + (new Date().getFullYear() - 4) + "</option>";
     document.getElementById('year').innerHTML += "<option>" + (new Date().getFullYear() - 5) + "</option>";
 
-    genres();
-    browseMovie()
+    genresSeries();
+    browseSeries()
   </script>
 
 </body>

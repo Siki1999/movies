@@ -114,7 +114,7 @@
                         <h3 class="h3" id="tagline"></h3>
                         <p class="storyline" id="storyline"></p>
                         <div class="meta-wrapper">
-                            <button class="btn btn-primary" onclick="getTrailer(param)">
+                            <button class="btn btn-primary" onclick="getSeriesTrailer(param)">
                                 <ion-icon name="play"></ion-icon>
                                 <span>Trailer</span>
                             </button>
@@ -145,14 +145,6 @@
                             <div style="margin-bottom: 30px;">
                                 <h2 class="h2">Status</h2>
                                 <h4 id="status" style="color:var(--white);font-weight: inherit;"></h4>
-                            </div>
-                            <div style="margin-bottom: 30px;">
-                                <h2 class="h2">Budzet</h2>
-                                <h4 id="budzet" style="color:var(--white);font-weight: inherit;"></h4>
-                            </div>
-                            <div style="margin-bottom: 30px;">
-                                <h2 class="h2">Prihod</h2>
-                                <h4 id="prihod" style="color:var(--white);font-weight: inherit;"></h4>
                             </div>
                         </section>
                     </div>
@@ -230,7 +222,7 @@
     var param = window.location.search;
     param = param.split('?')[1];
 
-    getDetails(param);
+    getSeriesDetails(param);
   </script>
 
 </body>

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shinso</title>
+  <title id="title"></title>
 
   <!-- 
     - favicon
@@ -25,7 +25,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src='./script/env.js'></script>
+  <script src='./script/subtitles.js'></script>
   <script src='./script/movies.js'></script>
+  <script src='./script/translate.js'></script>
 </head>
 
 <body id="top">
@@ -98,41 +100,46 @@
   <main>
     <article>
       <!-- 
-        - #SEARCH
+        - #TRENDING
       -->
-      <section class="top-rated">
+      <div id="background">
+      <section class="top-rated" style="padding-bottom: 1%;background-image: linear-gradient(to right, rgba(15, 15, 15, 1), rgba(15, 15, 15, 0.7) 50%, rgba(15, 15, 15, 1) 100%);background-color: transparent;">
         <div class="container">
-          <div style="display: flex;justify-content: center;padding-bottom: 1%;gap: 10%;">
-            
-            <div style="width: 20%">
-              <div class="dropdown" style="padding-bottom: 5%;padding-left: 40%;padding-top: 10%;">
-                <button class="dropbtn">Zanr</button>
-                <div class="dropdown-content" id="zanrovi"></div>
-              </div>
-              <div id="zanrElements" style="width: 100%;height: 75px;overflow: auto;"></div>
+            <div style="display: flex;justify-content: center;padding-bottom: 2%;">
+                <iframe id="iframe" src="" width="80%" height="700" frameborder="0" allowfullscreen style="box-shadow: rgba(0, 0, 0, 0.8) 0px 0px 0px 10px, rgb(0, 0, 0) 0px 4px 8px;;visibility: hidden;"></iframe>
             </div>
-            
-            <div style="color: var(--white);">
-              <div style="text-align: center;padding-bottom: 5%;">
-                <label for="year">Godina</label>
-              </div>
-              <select name="languages" id="year" class="btn-filter">
-                <option>Odaberite godinu</option>
-              </select>
+            <div>
+                <ul class="filter-list" style="gap: 5%;">
+                <li>
+                  <button id="server1" class="filter-btn serverActive" onclick="seriesServer1()" style="display: flex;justify-content: center;align-items: center;"><ion-icon name="play"></ion-icon><span style="padding-left: 10px;">Multiembed</span></button>
+                </li>
+                <li>
+                  <button id="server2" class="filter-btn" onclick="seriesServer2()" style="display: flex;justify-content: center;align-items: center;"><ion-icon name="play"></ion-icon><span style="padding-left: 10px;">Autoembed</span></button>
+                </li>
+                <li>
+                  <button id="server3" class="filter-btn" onclick="seriesServer3()" style="display: flex;justify-content: center;align-items: center;"><ion-icon name="play"></ion-icon><span style="padding-left: 10px;">Vidsrc</span></button>
+                </li>
+                <li>
+                  <button id="server4" class="filter-btn" onclick="seriesServer4()" style="display: flex;justify-content: center;align-items: center;"><ion-icon name="play"></ion-icon><span style="padding-left: 10px;">Vidsrc 2</span></button>
+                </li>
+              </ul>
             </div>
-            
-
-
-            <button class="btn btn-primary" onclick="browseMovie()" style="height: fit-content;margin-top: 2%;"><ion-icon name="play"></ion-icon><span>Filtriraj</span></button>
-          </div>
-
-          <div style="margin-bottom: 2%;border: 1.5px solid #0080ff;"></div>
-          
-          <ul class="movies-list" id="browse_list"></ul>
-
+            <div>
+              <h2 class="h2" style="display: flex;justify-content: center;padding-bottom: 1%;">Sezone/Epizode</h2>
+              <div style="width: 20%; padding-bottom: 1%;">
+                <select name="sezona" id="sezone" class="btn-filter" onchange="changeSeason()"></select>
+              </div>
+              <div>
+                <ul class="filter-list" style="display: flex;justify-content: left;" id="epizode"></ul>
+              </div>
+            </div>
+            <div>
+                <h2 class="h2" style="display: flex;justify-content: center;padding-bottom: 1%;">Titlovi</h2>
+                <ul class="filter-list" id="titloviHTML" style="gap: 100px;"></ul>
+            </div>
         </div>
       </section>
-
+      </div>
     </article>
   </main>
 
@@ -162,11 +169,11 @@
     - #GO TO TOP
   -->
 
-  <a href="#top" class="go-top" data-go-top>
-    <ion-icon name="chevron-up"></ion-icon>
+  <a class="go-back" onclick="goBack()">
+    <ion-icon name="chevron-back"></ion-icon>
   </a>
 
-
+  <div style="display:none;" id="movieID"></div>
 
 
 
@@ -181,15 +188,17 @@
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   <script>
-    document.getElementById('year').innerHTML += "<option>" + new Date().getFullYear() + "</option>";
-    document.getElementById('year').innerHTML += "<option>" + (new Date().getFullYear() - 1) + "</option>";
-    document.getElementById('year').innerHTML += "<option>" + (new Date().getFullYear() - 2) + "</option>";
-    document.getElementById('year').innerHTML += "<option>" + (new Date().getFullYear() - 3) + "</option>";
-    document.getElementById('year').innerHTML += "<option>" + (new Date().getFullYear() - 4) + "</option>";
-    document.getElementById('year').innerHTML += "<option>" + (new Date().getFullYear() - 5) + "</option>";
+    var params = window.location.search;
+    var movieID = params.split('=')[1].substring(2);
+    const withoutLeading0 = parseInt(movieID, 10);
+    
+    loginSubtitlesSeries(withoutLeading0, 1, 1);
 
-    genres();
-    browseMovie()
+    series(params.split('=')[1]);
+
+    function goBack() {
+        location.href = "seriesDetails.html?" + document.getElementById('movieID').innerHTML;
+    }
   </script>
 
 </body>

@@ -14,10 +14,194 @@ function loginSubtitles(movieId) {
     }).then(function(response) {
         return response.json();
     }).then(function(data) {
-        console.log(data);
         var links = [];
         var linkName = [];
         searchSubsHR(movieId, data.token, links, linkName);
+    }).catch(function(err) {
+      console.log('Fetch Error :-S', err);
+    });
+}
+
+function loginSubtitlesSeries(movieId, episode, season) {
+  fetch(loginURL, {
+    method: 'POST',
+    headers: {
+      'Api-Key': apiKey,
+      'Content-Type': 'application/json'
+    }
+  }).then(function(response) {
+      return response.json();
+  }).then(function(data) {
+      var links = [];
+      var linkName = [];
+      searchSubsSeriesHR(movieId, data.token, links, linkName, episode, season);
+  }).catch(function(err) {
+    console.log('Fetch Error :-S', err);
+  });
+}
+
+function searchSubsSeriesHR(movieId, token, links, linkName, episode, season) {
+	fetch(searchURL + '?imdb_id=' + movieId + '&episode_number=' + episode + '&languages=hr', {
+      method: 'GET',
+      headers: {
+        'Api-Key': apiKey,
+        'Content-Type': 'application/json'
+      }
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        if(data.data.length >= 3){
+          addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'hr', '1', episode, season);
+          addSeries(token, data.data[1].attributes.files[0].file_id, links, linkName, 'hr', '2', episode, season);
+          addSeries(token, data.data[2].attributes.files[0].file_id, links, linkName, 'hr', '3', episode, season);
+        } else if (data.data.length == 2){
+          addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'hr', '1', episode, season);
+          addSeries(token, data.data[1].attributes.files[0].file_id, links, linkName, 'hr', '2', episode, season);
+          searchSubsSeriesSR(movieId, token, links, linkName, '2', episode, season);
+        } else if (data.data.length == 1){
+          addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'hr', '1', episode, season);
+          searchSubsSeriesSR(movieId, token, links, linkName, '1', episode, season);
+        } else {
+          searchSubsSeriesSR(movieId, token, links, linkName, '0', episode, season);
+        }
+    }).catch(function(err) {
+      console.log('Fetch Error :-S', err);
+    });
+}
+
+function searchSubsSeriesSR(movieId, token, links, linkName, downloaded, episode, season) {
+  fetch(searchURL + '?imdb_id=' + movieId + '&episode_number=' + episode + '&languages=sr', {
+      headers: {
+        'Api-Key': apiKey,
+        'Content-Type': 'application/json'
+      }
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        if(downloaded == '2'){
+          if(data.data.length >= 1){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'sr', '1', episode, season);
+          } else {
+            searchSubsSeriesBS(movieId, token, links, linkName, '2', episode, season);
+          }
+        } else if(downloaded == '1'){
+          if(data.data.length >= 2){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'sr', '1', episode, season);
+            addSeries(token, data.data[1].attributes.files[0].file_id, links, linkName, 'sr', '2', episode, season);
+          } else if(data.data.length == 1){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'sr', '1', episode, season);
+            searchSubsSeriesBS(movieId, token, links, linkName, '2', episode, season);
+          } else {
+            searchSubsSeriesBS(movieId, token, links, linkName, '1', episode, season);
+          }
+        } else {
+          if(data.data.length >= 3){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'sr', '1', episode, season);
+            addSeries(token, data.data[1].attributes.files[0].file_id, links, linkName, 'sr', '2', episode, season);
+            addSeries(token, data.data[2].attributes.files[0].file_id, links, linkName, 'sr', '3', episode, season);
+          } else if (data.data.length == 2){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'sr', '1', episode, season);
+            addSeries(token, data.data[1].attributes.files[0].file_id, links, linkName, 'sr', '2', episode, season);
+            searchSubsSeriesBS(movieId, token, links, linkName, '2', episode, season);
+          } else if (data.data.length == 1){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'sr', '1', episode, season);
+            searchSubsSeriesBS(movieId, token, links, linkName, '1', episode, season);
+          } else {
+            searchSubsSeriesBS(movieId, token, links, linkName, '0', episode, season);
+          }
+        }
+    }).catch(function(err) {
+      console.log('Fetch Error :-S', err);
+    });
+}
+
+function searchSubsSeriesBS(movieId, token, links, linkName, downloaded, episode, season) {
+  fetch(searchURL + '?imdb_id=' + movieId + '&episode_number=' + episode + '&languages=bs', {
+      headers: {
+        'Api-Key': apiKey,
+        'Content-Type': 'application/json'
+      }
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        if(downloaded == '2'){
+          if(data.data.length >= 1){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'bs', '1', episode, season);
+          } else {
+            searchSubsSeriesEN(movieId, token, links, linkName, '2', episode, season);
+          }
+        } else if(downloaded == '1'){
+          if(data.data.length >= 2){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'bs', '1', episode, season);
+            addSeries(token, data.data[1].attributes.files[0].file_id, links, linkName, 'bs', '2', episode, season);
+          } else if(data.data.length == 1){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'bs', '1', episode, season);
+            searchSubsSeriesEN(movieId, token, links, linkName, '2', episode, season);
+          } else {
+            searchSubsSeriesEN(movieId, token, links, linkName, '1', episode, season);
+          }
+        } else {
+          if(data.data.length >= 3){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'bs', '1', episode, season);
+            addSeries(token, data.data[1].attributes.files[0].file_id, links, linkName, 'bs', '2', episode, season);
+            addSeries(token, data.data[2].attributes.files[0].file_id, links, linkName, 'bs', '3', episode, season);
+          } else if (data.data.length == 2){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'bs', '1', episode, season);
+            addSeries(token, data.data[1].attributes.files[0].file_id, links, linkName, 'bs', '2', episode, season);
+            searchSubsSeriesEN(movieId, token, links, linkName, '2', episode, season);
+          } else if (data.data.length == 1){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'bs', '1', episode, season);
+            searchSubsSeriesEN(movieId, token, links, linkName, '1', episode, season);
+          } else {
+            searchSubsSeriesEN(movieId, token, links, linkName, '0', episode, season);
+          }
+        }
+    }).catch(function(err) {
+      console.log('Fetch Error :-S', err);
+    });
+}
+
+function searchSubsSeriesEN(movieId, token, links, linkName, downloaded, episode, season) {
+  fetch(searchURL + '?imdb_id=' + movieId + '&episode_number=' + episode + '&languages=en', {
+      headers: {
+        'Api-Key': apiKey,
+        'Content-Type': 'application/json'
+      }
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        if(downloaded == '2'){
+          if(data.data.length >= 1){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'en', '1', episode, season);
+          } else {
+            dodajTitloveSeriesHTML(links, linkName, episode, season);
+          }
+        } else if(downloaded == '1'){
+          if(data.data.length >= 2){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'en', '1', episode, season);
+            addSeries(token, data.data[1].attributes.files[0].file_id, links, linkName, 'en', '2', episode, season);
+          } else if(data.data.length == 1){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'en', '1', episode, season);
+            dodajTitloveSeriesHTML(links, linkName, episode, season);
+          } else {
+            dodajTitloveSeriesHTML(links, linkName, episode, season);
+          }
+        } else {
+          if(data.data.length >= 3){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'en', '1', episode, season);
+            addSeries(token, data.data[1].attributes.files[0].file_id, links, linkName, 'en', '2', episode, season);
+            addSeries(token, data.data[2].attributes.files[0].file_id, links, linkName, 'en', '3', episode, season);
+          } else if (data.data.length == 2){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'en', '1', episode, season);
+            addSeries(token, data.data[1].attributes.files[0].file_id, links, linkName, 'en', '2', episode, season);
+            dodajTitloveSeriesHTML(links, linkName, episode, season);
+          } else if (data.data.length == 1){
+            addSeries(token, data.data[0].attributes.files[0].file_id, links, linkName, 'en', '1', episode, season);
+            dodajTitloveSeriesHTML(links, linkName, episode, season);
+          } else {
+            dodajTitloveSeriesHTML(links, linkName, episode, season);
+          }
+        }
     }).catch(function(err) {
       console.log('Fetch Error :-S', err);
     });
@@ -33,7 +217,6 @@ function searchSubsHR(movieId, token, links, linkName) {
     }).then(function(response) {
         return response.json();
     }).then(function(data) {
-        console.log(data);
         if(data.data.length >= 3){
           add(token, data.data[0].attributes.files[0].file_id, links, linkName, 'hr', '1');
           add(token, data.data[1].attributes.files[0].file_id, links, linkName, 'hr', '2');
@@ -62,7 +245,6 @@ function searchSubsSR(movieId, token, links, linkName, downloaded) {
     }).then(function(response) {
         return response.json();
     }).then(function(data) {
-        console.log(data);
         if(downloaded == '2'){
           if(data.data.length >= 1){
             add(token, data.data[0].attributes.files[0].file_id, links, linkName, 'sr', '1');
@@ -109,7 +291,6 @@ function searchSubsBS(movieId, token, links, linkName, downloaded) {
     }).then(function(response) {
         return response.json();
     }).then(function(data) {
-        console.log(data);
         if(downloaded == '2'){
           if(data.data.length >= 1){
             add(token, data.data[0].attributes.files[0].file_id, links, linkName, 'bs', '1');
@@ -156,7 +337,6 @@ function searchSubsEN(movieId, token, links, linkName, downloaded) {
     }).then(function(response) {
         return response.json();
     }).then(function(data) {
-        console.log(data);
         if(downloaded == '2'){
           if(data.data.length >= 1){
             add(token, data.data[0].attributes.files[0].file_id, links, linkName, 'en', '1');
@@ -204,8 +384,6 @@ function logout(token) {
 	  }
 	}).then(function(response) {
         return response.json();
-    }).then(function(data) {
-        console.log(data);
     }).catch(function(err) {
       console.log('Fetch Error :-S', err);
     });
@@ -219,6 +397,16 @@ function dodajTitloveHTML(titloviID, opis){
     document.getElementById('titloviHTML').innerHTML += link;
     document.getElementById("iframe").src = "https://multiembed.mov/?video_id=tt" + movieID;
     document.getElementById("iframe").style.visibility = "visible"
+}
+
+function dodajTitloveSeriesHTML(titloviID, opis, episode, season){
+  var link = "";
+  for (var i = 0; i < titloviID.length; i++) {
+    link = link + "<li><div style='color: var(--white);display: flex;justify-content: center;padding-bottom: 5%;'>" + opis[i] + "</div><button class='btn btn-primary' onclick='download(\"" + titloviID[i] + "\", \"" + opis[i] + "\")'><ion-icon name='cloud-download'></ion-icon><span>Download</span></button></li>"
+  }
+  document.getElementById('titloviHTML').innerHTML += link;
+  document.getElementById("iframe").src = "https://multiembed.mov/?video_id=tt" + movieID + '&s=' + season + '&e=' + episode;
+  document.getElementById("iframe").style.visibility = "visible"
 }
 
 function server1(){
@@ -249,7 +437,7 @@ function server3(){
 }
 
 function server4(){
-    document.getElementById("iframe").src = "https://vidsrc.me/embed/tt" + movieID + "/";
+    document.getElementById("iframe").src = "https://vidsrc.xyz/embed/movie/tt" + movieID;
     document.getElementById('server4').classList.add("serverActive");
     document.getElementById('server1').classList.remove("serverActive");
     document.getElementById('server2').classList.remove("serverActive");
@@ -264,6 +452,58 @@ function server5(){
     document.getElementById('server2').classList.remove("serverActive");
     document.getElementById('server3').classList.remove("serverActive");
     document.getElementById('server4').classList.remove("serverActive");
+}
+
+function seriesServer1(){
+  var selectedSeason = document.getElementById("sezone").options[document.getElementById("sezone").selectedIndex].value;
+  var season = selectedSeason.split(' ');
+  var episode = document.getElementById("epizode").getElementsByClassName("serverActive")[0].id;
+
+  document.getElementById("iframe").src = "https://multiembed.mov/?video_id=tt" + movieID + '&s=' + season[1] + '&e=' + episode;
+  document.getElementById('server1').classList.add("serverActive");
+  document.getElementById('server2').classList.remove("serverActive");
+  document.getElementById('server3').classList.remove("serverActive");
+  document.getElementById('server4').classList.remove("serverActive");
+  document.getElementById('server5').classList.remove("serverActive");
+}
+
+function seriesServer2(){
+  var selectedSeason = document.getElementById("sezone").options[document.getElementById("sezone").selectedIndex].value;
+  var season = selectedSeason.split(' ');
+  var episode = document.getElementById("epizode").getElementsByClassName("serverActive")[0].id;
+
+  document.getElementById("iframe").src = "https://player.autoembed.cc/embed/tv/tt" + movieID + '/' + season[1] + '/' + episode;
+  document.getElementById('server2').classList.add("serverActive");
+  document.getElementById('server1').classList.remove("serverActive");
+  document.getElementById('server3').classList.remove("serverActive");
+  document.getElementById('server4').classList.remove("serverActive");
+  document.getElementById('server5').classList.remove("serverActive");
+}
+
+function seriesServer3(){
+  var selectedSeason = document.getElementById("sezone").options[document.getElementById("sezone").selectedIndex].value;
+  var season = selectedSeason.split(' ');
+  var episode = document.getElementById("epizode").getElementsByClassName("serverActive")[0].id;
+  
+  document.getElementById("iframe").src = "https://vidsrc.cc/v2/embed/tv/tt" + movieID + '/' + season[1] + '/' + episode + "?autoPlay=false"
+  document.getElementById('server3').classList.add("serverActive");
+  document.getElementById('server1').classList.remove("serverActive");
+  document.getElementById('server2').classList.remove("serverActive");
+  document.getElementById('server4').classList.remove("serverActive");
+  document.getElementById('server5').classList.remove("serverActive");
+}
+
+function seriesServer4(){
+    var selectedSeason = document.getElementById("sezone").options[document.getElementById("sezone").selectedIndex].value;
+    var season = selectedSeason.split(' ');
+    var episode = document.getElementById("epizode").getElementsByClassName("serverActive")[0].id;
+
+    document.getElementById("iframe").src = "https://vidsrc.xyz/embed/tv/tt" + movieID + "/" + season[1] + '-' + episode;
+    document.getElementById('server4').classList.add("serverActive");
+    document.getElementById('server1').classList.remove("serverActive");
+    document.getElementById('server2').classList.remove("serverActive");
+    document.getElementById('server3').classList.remove("serverActive");
+    document.getElementById('server5').classList.remove("serverActive");
 }
 
 
@@ -294,7 +534,6 @@ function download(fileID, opis) {
   }).then(function(response) {
         return response.json();
     }).then(function(data) {
-        console.log(data);
         downloadFile(data.link, opis);
     }).catch(function(err) {
       console.log('Fetch Error : %s', err);
@@ -315,5 +554,22 @@ function add(token, fileID, links, linkName, language, number){
 
   if(links.length == 3){
     dodajTitloveHTML(links, linkName);
+  }
+}
+
+function addSeries(token, fileID, links, linkName, language, number, episode, season){
+  links.push(fileID);
+  if(language == 'hr'){
+    linkName.push('Hrvatski ' + number);
+  } else if(language == 'sr'){
+    linkName.push('Srpski ' + number);
+  } else if(language == 'bs'){
+    linkName.push('Bosanski ' + number);
+  } else {
+    linkName.push('Engleski ' + number);
+  }
+
+  if(links.length == 3){
+    dodajTitloveSeriesHTML(links, linkName, episode, season);
   }
 }
